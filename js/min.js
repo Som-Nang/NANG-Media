@@ -1,0 +1,88 @@
+$(document).ready(function() {
+    $('.menu-toggle').on('click', function() {
+        $('.nav').toggleClass('showing');
+        $('.nav ul').toggleClass('showing');
+      
+    });
+
+    $('.post-wrapper').slick({
+      slidesToShow: 3,
+      slidesToScroll: 1,
+      autoplay: true,
+      autoplaySpeed: 2000,
+      nextArrow: $('.next'),
+      prevArrow: $('.prev'),
+      responsive: [
+          {
+            breakpoint: 1024,
+            settings: {
+              slidesToShow: 3,
+              slidesToScroll: 3,
+              infinite: true,
+              dots: true
+            }
+          },
+          {
+            breakpoint: 600,
+            settings: {
+              slidesToShow: 2,
+              slidesToScroll: 2
+            }
+          },
+          {
+            breakpoint: 480,
+            settings: {
+              slidesToShow: 1,
+              slidesToScroll: 1
+            }
+          }
+          // You can unslick at a given breakpoint now by adding:
+          // settings: "unslick"
+          // instead of a settings object
+        ]
+    });
+});
+
+var typed = new Typed('#typed' ,{
+  strings: [ 
+  'FREELANCER',
+  'WEB-DEVELOPER', 
+  'SOFTWARE-ENGIN'
+  ],
+  typeSpeed: 50,
+  backSpeed: 50,
+  loop: true
+});
+
+$(document).ready(() => {
+ $('searchForm').on('submit', (e) => {
+  let searchText = $('searchText').val();
+  getMovies(searchText);
+  e.preventDefault();
+ });
+});
+  function getMovies(searchText){
+    axios.get('https://www.youtube.com/?s='+searchText)
+    .then((response) => {
+      console.log(response);
+      let movies = response.data.Search;
+      let output = '';
+      $.each(movies, (index, movie) => {
+        output += `
+        <div class="col-md-3">
+          
+          <div class="well text-center">
+            <img src="${movie.PosTer}">
+            <h5>${movie.Title}</h5>
+            <a onclick="movieSelected('${movie.hollymovieHD}') class="btn btn-primary" href="#"> Movie D T </a>
+          </div>
+          
+        </div>
+        `;
+      });
+      $('movies').html(output);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+  }
